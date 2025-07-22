@@ -10,6 +10,7 @@ import { useAuthentication } from "./hooks/useAuthentication";
 //components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import Post from "./pages/Post/Post";
 
 //Pages
 import Home from "./pages/Home/Home";
@@ -18,6 +19,10 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import CreatePost from "./pages/CreatePost/CreatepPost";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import Search from "./pages/Search/Search";
+import EditPost from "./pages/editPost/EditPost";
+
+
 
 //context
 import { AuthProvider } from "./context/AuthContext";
@@ -47,6 +52,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/search" element={<Search />} />
+              <Route path="/posts/:id" element={<Post />} />
               <Route
                 path="/login"
                 element={!user ? <Login /> : <Navigate to="/" />}
@@ -58,6 +65,10 @@ function App() {
               <Route
                 path="/post/create"
                 element={user ? <CreatePost /> : <Navigate to="/login" />}
+              />
+                  <Route
+                path="/posts/edit/:id"
+                element={user ? <EditPost /> : <Navigate to="/login" />}
               />
               <Route
                 path="/dashboard"

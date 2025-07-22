@@ -4,7 +4,6 @@ import {
   signOut,
   signInWithEmailAndPassword,
   updateProfile,
-  
 } from "firebase/auth";
 import { useState, useEffect } from "react";
 
