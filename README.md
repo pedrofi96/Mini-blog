@@ -1,70 +1,79 @@
-# Getting Started with Create React App
+# Mini-blog
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Aplicação de blog full stack construída em **React**, utilizando o **Firebase** (Firestore + Authentication) como back-end.
 
-## Available Scripts
+## Sobre o projeto
 
-In the project directory, you can run:
+Plataforma onde usuários autenticados podem criar, editar e excluir posts, enquanto qualquer visitante pode navegar, ler e buscar publicações. O projeto foi desenvolvido para praticar hooks customizados, Context API para autenticação global e rotas protegidas com React Router.
 
-### `npm start`
+## Tecnologias utilizadas
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React
+- React Router DOM (rotas públicas e protegidas)
+- Firebase Authentication (cadastro/login de usuários)
+- Firebase Firestore (banco de dados NoSQL em tempo real)
+- Context API (estado global de autenticação)
+- CSS Modules
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Funcionalidades
 
-### `npm test`
+- Cadastro e login de usuários (Firebase Authentication)
+- Criação, edição e exclusão de posts (somente usuário autenticado e dono do post)
+- Listagem de posts na Home e página de detalhes de cada post
+- Busca de posts por palavra-chave
+- Dashboard pessoal com os posts do usuário logado
+- Redirecionamento automático: rotas de login/registro ficam indisponíveis para quem já está autenticado; rotas de criação/edição exigem login
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Hooks customizados
 
-### `npm run build`
+O projeto centraliza toda a lógica de acesso ao Firestore em hooks reutilizáveis:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `useAuthentication` — cadastro, login, logout e criação do perfil no Firebase Auth
+- `useFetchDocuments` / `useFetchDocument` — busca de múltiplos documentos (com filtro opcional) e de um documento específico
+- `useInsertDocument` — criação de novo post, com controle de estado via `useReducer`
+- `useUpdateDocument` — edição de post existente
+- `useDeleteDocument` — exclusão de post
+- `useQuery` — leitura de parâmetros da URL
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Todos os hooks de escrita (`insert`, `update`, `delete`) tratam o estado de `loading`/`error` com `useReducer` e cancelam o dispatch se o componente for desmontado antes da resposta, evitando o warning de memory leak do React.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Estrutura do projeto
 
-### `npm run eject`
+```
+Mini-blog/
+└── src/
+    ├── components/       # Navbar, Footer, PostDetail
+    ├── context/          # AuthContext
+    ├── firebase/         # Configuração do Firebase
+    ├── hooks/            # Hooks customizados de dados e autenticação
+    └── pages/            # Home, About, Login, Register, Dashboard, Search, CreatePost, EditPost, Post
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Como rodar localmente
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm install
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Crie um projeto no [Firebase Console](https://console.firebase.google.com/), ative **Authentication** (e-mail/senha) e **Firestore Database**, e configure suas credenciais em `src/firebase/config.js`:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```js
+const firebaseConfig = {
+  apiKey: "...",
+  authDomain: "...",
+  projectId: "...",
+  storageBucket: "...",
+  messagingSenderId: "...",
+  appId: "...",
+};
+```
 
-## Learn More
+```bash
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+A aplicação sobe em `http://localhost:3000`.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Autor
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Pedro Filipe Tavares Baptista — [github.com/pedrofi96](https://github.com/pedrofi96)
